@@ -20,7 +20,7 @@ class SocialLoginController extends Controller
     {
         $request->validate([
             'token'    => 'required',
-            'provider' => 'required|in:google,twitter',
+            'provider' => 'required|in:google,apple',
         ]);
 
         try {
@@ -43,7 +43,7 @@ class SocialLoginController extends Controller
                         'password'          => bcrypt($password),
                         'provider'          => $provider,
                         'provider_id'       => $socialUser->getId(),
-                        'role'              => 'user',
+                        'user_type'              => 'user',
                         'email_verified_at' => now(),
                     ]);
                     $isNewUser = true;
@@ -54,9 +54,9 @@ class SocialLoginController extends Controller
 
                 // Prepare success response
                 $success = [
-                    'id' => $user->id,
+                    'name' => $user->name,
                     'email' => $user->email,
-                    'role' => $user->role,
+                    'user_type' => $user->user_type,
                 ];
 
                 // Evaluate the message based on the $isNewUser condition

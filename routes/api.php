@@ -12,7 +12,7 @@ use App\Http\Controllers\API\SubscriptionApiController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/socialLogin', [SocialLoginController::class, 'SocialLogin']);
+Route::post('/social-login', [SocialLoginController::class, 'SocialLogin']);
 Route::post('/register', [AuthController::class, 'userStore']);
 Route::post('/login', [AuthController::class, 'login']);
 
