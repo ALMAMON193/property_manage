@@ -41,7 +41,6 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'phone' => $user->phone,
                 'country' => $user->country,
                 'user_type' => $user->user_type,
             ];
@@ -61,7 +60,6 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'phone' => ['required', 'string', 'max:20'],
             'country' => ['required', 'string', 'max:100'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -75,7 +73,6 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'phone' => $request->phone,
                 'country' => $request->country,
                 'password' => Hash::make($request->password),
                 'user_type' => 'user',
@@ -89,7 +86,6 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'phone' => $user->phone,
                 'country' => $user->country,
                 'user_type' => $user->user_type,
             ];
@@ -116,7 +112,6 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'phone' => $user->phone,
                 'country' => $user->country,
                 'user_type' => $user->user_type,
             ];
