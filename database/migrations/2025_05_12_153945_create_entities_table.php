@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('entities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('created_by_id');
-            $table->enum('type', ['individual', 'legal_entity']);
-            $table->string('category');
+            $table->string('name');
+            $table->enum('type', ['individual', 'joint_owner', 'legal_entity']);
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('entities');
     }
 };

@@ -16,7 +16,40 @@ use Illuminate\Support\Str;
 class OtpController extends Controller
 {
     use ResponseTrait;
-    public function sendOtp(Request $request)
+    public function sendOtp($email)
+    {
+        try {
+            /*$validator = Validator::make($request->all(), [
+                'email' => 'required|email',
+            ]);
+
+            if ($validator->fails()) {
+                return $this->sendError('Validation failed', $validator->errors()->toArray(), 422);
+            }*/
+
+            $otp = rand(100000, 999999); // Generate 6-digit OTP
+            $expiresAt = Carbon::now()->addMinutes(10);
+
+            // Save OTP in database
+            Otp::updateOrCreate(
+                ['email' => $email],
+                ['otp' => $otp, 'expires_at' => $expiresAt]
+            );
+
+            // Send OTP via email
+            Mail::raw("Your OTP code is: $otp", function ($message) use ($email) {
+                $message->to($email)
+                    ->subject('Your OTP Code');
+            });
+
+            return $this->sendResponse('', 'OTP sent successfully.', '', 200);
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to send OTP', ['error' => $e->getMessage()], 500);
+        }
+    }
+
+
+    public function resendOtp(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -27,8 +60,8 @@ class OtpController extends Controller
                 return $this->sendError('Validation failed', $validator->errors()->toArray(), 422);
             }
 
-            $otp = rand(1000, 9999); // Generate 4-digit OTP
-            $expiresAt = Carbon::now()->addMinutes(5);
+            $otp = rand(100000, 999999); // Generate 6-digit OTP
+            $expiresAt = Carbon::now()->addMinutes(10);
 
             // Save OTP in database
             Otp::updateOrCreate(
@@ -41,9 +74,8 @@ class OtpController extends Controller
                 $message->to($request->email)
                     ->subject('Your OTP Code');
             });
-
             return $this->sendResponse('', 'OTP sent successfully.', '', 200);
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return $this->sendError('Failed to send OTP', ['error' => $e->getMessage()], 500);
         }
     }
@@ -75,18 +107,15 @@ class OtpController extends Controller
         try {
             // Check if user already exists
             $user = User::where('email', $request->email)->first();
-            $isNewUser = false;
             if (!$user) {
-                $password = Str::random(8);
-                // Create User
-                $user = User::create([
-                    'email' => $request->email,
-                    'password' => bcrypt($password),
-                    'role' => 'user',
-                    'email_verified_at' => now(),
-                ]);
-                $isNewUser = true;
+                return $this->sendResponse([], 'No user found for this email');
             }
+            // update User
+            $user->update([
+                'email' => $request->email,
+                'email_verified_at' => now(),
+                'is_verified' => true,
+            ]);
 
             // Delete OTP after successful verification
             $otpRecord->delete();
@@ -98,11 +127,12 @@ class OtpController extends Controller
             $success = [
                 'id' => $user->id,
                 'email' => $user->email,
-                'role' => $user->role,
+                'user_type' => $user->user_type,
+                'is_verified' => $user->is_verified,
             ];
 
             // Evaluate the message based on the $isNewUser condition
-            $message = $isNewUser ? 'User registered and logged in successfully' : 'User logged in successfully';
+            $message = 'User logged in successfully';
 
 
             return $this->sendResponse($success, $message, $token);

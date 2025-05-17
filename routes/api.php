@@ -12,9 +12,11 @@ use App\Http\Controllers\API\SubscriptionApiController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/socialLogin', [SocialLoginController::class, 'SocialLogin']);
+Route::post('/social-login', [SocialLoginController::class, 'SocialLogin']);
 Route::post('/register', [AuthController::class, 'userStore']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/resend-otp', [OtpController::class, 'resendOtp']);
+Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);

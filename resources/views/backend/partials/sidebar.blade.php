@@ -67,16 +67,16 @@
                 </li> <!-- end Dashboard Menu -->
 
                 {{--=========================== Category START ==================--}}
-                <li class="nav-item">
+                {{--<li class="nav-item">
                     <a class="nav-link menu-link {{ Request::routeIs('admin.category.*') ? 'active' : '' }}" href="{{ route('admin.category.index') }}" role="button" aria-expanded="false" aria-controls="tips_care">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Categories</span>
                     </a>
-                </li> <!-- end Dashboard Menu -->
+                </li>--}} <!-- end Dashboard Menu -->
                 {{--=========================== Category END ==================--}}
 
 
                 {{--=========================== Add Key-feautre START ==================--}}
-                <li class="nav-item">
+                {{--<li class="nav-item">
                     <a class="nav-link menu-link {{ Request::routeIs('admin.key_feature.*') ? 'active' : 'collapsed' }}" href="#key_feature" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-apps-2-line"></i> <span data-key="t-apps">Key Feature</span>
                     </a>
@@ -92,12 +92,12 @@
                             </li>
                         </ul>
                     </div>
-                </li> <!-- end Key Feature Menu -->
+                </li>--}} <!-- end Key Feature Menu -->
                 {{--=========================== Add Key-feautre END ==================--}}
 
 
                 {{--=========================== Product START ==================--}}
-                <li class="nav-item">
+                {{--<li class="nav-item">
                     <a class="nav-link menu-link {{ Request::routeIs('admin.product.*') ? 'active' : 'collapsed' }}" href="#product" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-apps-2-line"></i> <span data-key="t-apps">Products</span>
                     </a>
@@ -113,32 +113,44 @@
                             </li>
                         </ul>
                     </div>
-                </li> <!-- end Key Feature Menu -->
+                </li>--}} <!-- end Key Feature Menu -->
                 {{--=========================== Product END ==================--}}
 
 
                 {{--=========================== Retailer START ==================--}}
-                <li class="nav-item">
+                {{--<li class="nav-item">
                     <a class="nav-link menu-link {{ Request::routeIs('admin.retailer.*') ? 'active' : '' }}" href="{{ route('admin.retailer.index') }}" role="button" aria-expanded="false" aria-controls="tips_care">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">All Retailer</span>
                     </a>
-                </li>
+                </li>--}}
                 {{--=========================== Retailer END ==================--}}
 
 
                 {{--=========================== Contact List START ==================--}}
-                <li class="nav-item">
+                {{--<li class="nav-item">
                     <a class="nav-link menu-link {{ Request::routeIs('admin.contact.*') ? 'active' : '' }}" href="{{ route('admin.contact.index') }}" role="button" aria-expanded="false" aria-controls="tips_care">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Contact List</span>
                     </a>
-                </li> <!-- end Dashboard Menu -->
+                </li>--}} <!-- end Dashboard Menu -->
                 {{--=========================== Contact List END ==================--}}
 
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ Request::routeIs('admin.subscribe.*') ? 'active' : '' }}" href="{{ route('admin.subscribe.index') }}" role="button" aria-expanded="false" aria-controls="tips_care">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Subscription List</span>
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">All users</span>
                     </a>
                 </li> <!-- end Dashboard Menu -->
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ Request::routeIs('admin.subscribe.*') ? 'active' : '' }}" href="{{ route('admin.subscribe.index') }}" role="button" aria-expanded="false" aria-controls="tips_care">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Payments</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ Request::routeIs('admin.subscribe.*') ? 'active' : '' }}" href="{{ route('admin.subscribe.index') }}" role="button" aria-expanded="false" aria-controls="tips_care">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Settings</span>
+                    </a>
+                </li>
 
 
 
