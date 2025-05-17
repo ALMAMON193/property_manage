@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Otp;
 use App\Models\User;
 use App\Trait\ResponseTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -71,7 +74,7 @@ class AuthController extends Controller
         try {
             // Create the user
             $user = User::create([
-                'name' => $request->name,
+                'first_name' => $request->name,
                 'email' => $request->email,
                 'country' => $request->country,
                 'password' => Hash::make($request->password),
@@ -79,18 +82,33 @@ class AuthController extends Controller
             ]);
 
             // Generate JWT token
-            $token = auth('api')->login($user);
+            //$token = auth('api')->login($user);
+
+            $otp = rand(100000, 999999); // Generate 6-digit OTP
+            $expiresAt = Carbon::now()->addMinutes(10);
+
+            // Save OTP in database
+            Otp::updateOrCreate(
+                ['email' => $request->email],
+                ['otp' => $otp, 'expires_at' => $expiresAt]
+            );
+
+            // Send OTP via email
+            Mail::raw("Your OTP code is: $otp", function ($message) use ($request) {
+                $message->to($request->email)
+                    ->subject('Your OTP Code');
+            });
 
             // Prepare response data
             $success = [
                 'id' => $user->id,
-                'name' => $user->name,
+                'name' => $user->first_name,
                 'email' => $user->email,
                 'country' => $user->country,
                 'user_type' => $user->user_type,
             ];
 
-            return $this->sendResponse($success, 'User registered and logged in successfully', $token);
+            return $this->sendResponse($success, 'Otp sent to the email');
 
         } catch (\Exception $e) {
             \Log::error('Registration error', ['error' => $e->getMessage()]);
