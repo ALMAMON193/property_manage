@@ -38,12 +38,12 @@ class SocialLoginController extends Controller
                 if (!$user) {
                     $password = Str::random(8);
                     $user     = User::create([
-                        'name'              => $socialUser->getName() ?? $socialUser->getNickname(),
+                        'first_name'        => $socialUser->getName() ?? $socialUser->getNickname(),
                         'email'             => $socialUser->getEmail() ?? $socialUser->getId().'@'.$provider.'.com',
                         'password'          => bcrypt($password),
                         'provider'          => $provider,
                         'provider_id'       => $socialUser->getId(),
-                        'user_type'              => 'user',
+                        'user_type'         => 'user',
                         'email_verified_at' => now(),
                     ]);
                     $isNewUser = true;
@@ -54,7 +54,7 @@ class SocialLoginController extends Controller
 
                 // Prepare success response
                 $success = [
-                    'name' => $user->name,
+                    'name' => $user->first_name,
                     'email' => $user->email,
                     'user_type' => $user->user_type,
                 ];
