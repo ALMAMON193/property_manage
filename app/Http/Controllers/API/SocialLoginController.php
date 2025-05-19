@@ -45,6 +45,7 @@ class SocialLoginController extends Controller
                         'provider_id'       => $socialUser->getId(),
                         'user_type'         => 'user',
                         'email_verified_at' => now(),
+                        'is_verified'       => true,
                     ]);
                     $isNewUser = true;
                 }
