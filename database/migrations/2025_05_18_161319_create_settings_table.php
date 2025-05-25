@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('app_name');
-            $table->string('tagline');
+            $table->string('app_name')->nullable();
+            $table->string('tagline')->nullable();
             $table->string('logo')->nullable();
             $table->string('footer_logo')->nullable();
             $table->string('favicon')->nullable();

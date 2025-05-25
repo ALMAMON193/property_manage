@@ -48,6 +48,12 @@ class SocialLoginController extends Controller
                         'is_verified'       => true,
                     ]);
                     $isNewUser = true;
+                }else{
+                    if (!$user->email_verified_at) {
+                        $user->email_verified_at = now();
+                    }
+                    $user->is_verified = true;
+                    $user->save();
                 }
 
                 // Generate token
