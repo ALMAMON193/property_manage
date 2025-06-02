@@ -82,6 +82,30 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(BankDetail::class);
     }
 
+    public function entities()
+    {
+        // entities created by the user
+        return $this->hasMany(Entity::class);
+    }
+
+    public function accessibleEntities()
+    {
+        // entities the user has access to
+        return $this->belongsToMany(Entity::class, 'entity_accesses');
+    }
+
+    public function entityAccesses()
+    {
+        // raw pivot entries if needed
+        return $this->hasMany(EntityAccess::class);
+    }
+
+    public function contactsCreated()
+    {
+        // contacts created by this user (using created_by_id)
+        return $this->hasMany(Contact::class, 'created_by_id');
+    }
+
     // Add the required JWT methods
     public function getJWTIdentifier()
     {

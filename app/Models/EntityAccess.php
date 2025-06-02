@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EntityContact extends Model
+class EntityAccess extends Model
 {
-    protected $table = 'entity_contacts';
+    protected $table = 'entity_accesses';
     protected $fillable = [
         'entity_id',
         'user_id',
@@ -16,10 +16,5 @@ class EntityContact extends Model
     public function entity()
     {
         return $this->belongsTo(Entity::class);
-    }
-
-    public function contact()
-    {
-        return $this->belongsTo(Contact::class, 'user_id');
     }
 }

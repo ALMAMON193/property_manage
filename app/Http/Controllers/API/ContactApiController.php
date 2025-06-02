@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\BankDetail;
 use App\Models\Contact;
-use App\Models\EntityContact;
+use App\Models\EntityAccess;
 use App\Models\EntityRepresentative;
 use App\Models\User;
 use App\Trait\ResponseTrait;
@@ -29,9 +29,9 @@ class ContactApiController extends Controller
         $rules = [
             'type' => 'required|in:individual,legal_entity',
             'category' => 'required|string',
-            'salutation' => 'required|string',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
+            'salutation' => 'required_if:type,individual|string',
+            'first_name' => 'required_if:type,individual|string',
+            'last_name' => 'required_if:type,individual|string',
             'email' => 'required|email',
             'phone' => 'required|string|regex:/^\+?[0-9]\d{1,14}$/',
             'date_of_birth' => 'nullable|date_format:m/d/Y',
@@ -46,8 +46,8 @@ class ContactApiController extends Controller
             'building_id' => 'nullable|exists:buildings,id',
 
             // for type legal_entity
-            'legal_status' => 'nullable|string',
-            'company_name' => 'nullable|string',
+            'legal_status' => 'required_if:type,legal_entity|string',
+            'company_name' => 'required_if:type,legal_entity|string',
 
             //for bank
             'bank_name' => 'nullable|string',
@@ -97,16 +97,22 @@ class ContactApiController extends Controller
         }
 
 
+
         try{
             DB::beginTransaction();
 
             // save contact as a user
             $user = User::create([
-                'salutation' => $request->salutation,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'company_name' => $request->company_name,
-                'legal_status' => $request->legal_status,
+                // For individual
+                'salutation'    => $request->type === 'individual' ? $request->salutation : null,
+                'first_name'    => $request->type === 'individual' ? $request->first_name : null,
+                'last_name'     => $request->type === 'individual' ? $request->last_name : null,
+
+                // For legal entity
+                'company_name'  => $request->type === 'legal_entity' ? $request->company_name : null,
+                'legal_status'  => $request->type === 'legal_entity' ? $request->legal_status : null,
+
+                //common for both
                 'email' => $request->email,
                 'password' => Hash::make('12345678'),
                 'phone' => $request->phone,
@@ -152,6 +158,7 @@ class ContactApiController extends Controller
             {
                 $representative = EntityRepresentative::create([
                     'contact_id' => $contact->id,
+                    'salutation' => $request->r_salutation,
                     'first_name' => $request->r_first_name,
                     'last_name' => $request->r_last_name,
                     'email' => $request->r_email,
@@ -169,12 +176,12 @@ class ContactApiController extends Controller
             }
 
             // assign contact to entity
-            $entityContact = null;
+            $entityAccess = null;
             if($request->entity_id)
             {
-                $entityContact = EntityContact::create([
+                $entityAccess = EntityAccess::create([
                     'entity_id' => $request->entity_id,
-                    'user_id' => $contact->id,
+                    'user_id' => $user->id,
                 ]);
             }
             DB::commit();
@@ -206,6 +213,62 @@ class ContactApiController extends Controller
         }
 
         $user = auth('api')->user();
-        $individualContacts =
+
+        // Fetch contacts of type 'individual' created by the authenticated user
+        $contacts = Contact::with(['user:id,first_name,last_name']) // eager load only required fields
+        ->where('created_by_id', $user->id)
+            ->where('type', 'individual')
+            ->get()
+            ->map(function ($contact) {
+                return [
+                    'id' => $contact->user->id,
+                    'name' => $contact->user->first_name . ' ' . $contact->user->last_name,
+                ];
+            });
+
+        return $this->sendResponse($contacts, 'Individual contacts retrieved successfully');
+    }
+
+
+    /*======= get all legal entity contact =========*/
+    public function getLegalEntityContacts()
+    {
+        // Check if the user is authenticated via the 'api' guard
+        if (!auth('api')->check()) {
+            return $this->sendError('Please login first', [], 422);
+        }
+
+        $user = auth('api')->user();
+
+        // Fetch contacts of type 'individual' created by the authenticated user
+        $contacts = Contact::with(['user:id,company_name']) // eager load only required fields
+        ->where('created_by_id', $user->id)
+            ->where('type', 'legal_entity')
+            ->get()
+            ->map(function ($contact) {
+                return [
+                    'id' => $contact->user->id,
+                    'name' => $contact->user->company_name,
+                ];
+            });
+
+        return $this->sendResponse($contacts, 'Legal entity contacts retrieved successfully');
+    }
+
+
+    /*======= get all contacts =========*/
+    public function getAllContacts()
+    {
+        // Check if the user is authenticated via the 'api' guard
+        if (!auth('api')->check()) {
+            return $this->sendError('Please login first', [], 422);
+        }
+
+        $user = auth('api')->user();
+
+        // Fetch all contacts created by the authenticated user
+        $contacts = $user->contactsCreated;
+
+        return $this->sendResponse($contacts, 'All contacts retrieved successfully');
     }
 }

@@ -13,13 +13,19 @@ class Entity extends Model
         'type'
     ];
 
-    public function contacts()
+
+    public function creator()
     {
-        return $this->hasMany(EntityContact::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function user()
+    public function assignedUsers()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'entity_accesses');
+    }
+
+    public function entityAccesses()
+    {
+        return $this->hasMany(EntityAccess::class);
     }
 }

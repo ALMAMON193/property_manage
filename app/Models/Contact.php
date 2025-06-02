@@ -30,10 +30,4 @@ class Contact extends Model
         return $this->hasOne(EntityRepresentative::class);
     }
 
-    public function entityContacts()
-    {
-        return $this->hasMany(EntityContact::class);
-    }
-
-
 }

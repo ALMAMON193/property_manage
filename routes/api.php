@@ -32,6 +32,7 @@ Route::middleware('auth:api')->group(function () {
         ->controller(EntityApiController::class)
         ->group(function () {
             Route::get('/get-all', 'getAllEntities');
+            Route::get('/get-all-accessible', 'getAccessibleEntities');
             Route::post('/store', 'storeEntity');
             Route::get('/edit/{id}', 'edit');
             Route::post('/update/{id}', 'update');
@@ -41,9 +42,12 @@ Route::middleware('auth:api')->group(function () {
 
     /*============ Contact routes ==========*/
     Route::prefix('contact')
-        ->controller(EntityApiController::class)
+        ->controller(ContactApiController::class)
         ->group(function () {
             Route::post('/store', 'store');
+            Route::get('/get-all', 'getAllContacts');
+            Route::get('/individuals', 'getIndividualContacts');
+            Route::get('/legal-entities', 'getLegalEntityContacts');
         });
 
     /*======= REVIEW =======*/
