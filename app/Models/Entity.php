@@ -12,4 +12,14 @@ class Entity extends Model
         'name',
         'type'
     ];
+
+    public function contacts()
+    {
+        return $this->hasMany(EntityContact::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

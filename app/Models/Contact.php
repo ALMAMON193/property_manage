@@ -7,19 +7,33 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
     protected $fillable = [
-        'company_name',
-        'email',
-        'phone',
-        'comment',
-        'not_a_robot',
+        'user_id',
+        'created_by_id',
+        'type',
+        'category',
+        'additional_info',
     ];
 
-    // Attribute casting
-    protected $casts = [
-        'company_name' => 'string',
-        'email' => 'string',
-        'phone' => 'string',
-        'comment' => 'string',
-        'not_a_robot' => 'boolean',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by_id');
+    }
+
+    public function representative()
+    {
+        return $this->hasOne(EntityRepresentative::class);
+    }
+
+    public function entityContacts()
+    {
+        return $this->hasMany(EntityContact::class);
+    }
+
+
 }
