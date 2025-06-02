@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\OTP;
+use App\Models\Otp;
 use App\Models\User;
 use App\Trait\ResponseTrait;
 use Carbon\Carbon;

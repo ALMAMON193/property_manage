@@ -31,12 +31,12 @@
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Total Products</p>
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Total Earnings</p>
                                                 </div>
                                                 <div class="flex-shrink-0">
-                                                    <h5 class="text-success fs-14 mb-0">
+                                                    {{--<h5 class="text-success fs-14 mb-0">
                                                         <i class="ri-arrow-right-up-line fs-13 align-middle"></i> +16.24 %
-                                                    </h5>
+                                                    </h5>--}}
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">
@@ -65,9 +65,9 @@
                                                     <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total Users</p>
                                                 </div>
                                                 <div class="flex-shrink-0">
-                                                    <h5 class="text-success fs-14 mb-0">
+                                                    {{--<h5 class="text-success fs-14 mb-0">
                                                         <i class="ri-arrow-right-up-line fs-13 align-middle"></i> +29.08 %
-                                                    </h5>
+                                                    </h5>--}}
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">
@@ -94,9 +94,9 @@
                                                     <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total Subscriptions</p>
                                                 </div>
                                                 <div class="flex-shrink-0">
-                                                    <h5 class="text-danger fs-14 mb-0">
+                                                    {{--<h5 class="text-danger fs-14 mb-0">
                                                         <i class="ri-arrow-right-down-line fs-13 align-middle"></i> -3.57 %
-                                                    </h5>
+                                                    </h5>--}}
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">

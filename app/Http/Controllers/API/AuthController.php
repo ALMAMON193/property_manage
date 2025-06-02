@@ -42,7 +42,7 @@ class AuthController extends Controller
 
             $success = [
                 'id' => $user->id,
-                'name' => $user->name,
+                'name' => $user->first_name,
                 'email' => $user->email,
                 'country' => $user->country,
                 'user_type' => $user->user_type,
@@ -128,7 +128,7 @@ class AuthController extends Controller
 
             $profile = [
                 'id' => $user->id,
-                'name' => $user->name,
+                'name' => $user->first_name,
                 'email' => $user->email,
                 'country' => $user->country,
                 'user_type' => $user->user_type,

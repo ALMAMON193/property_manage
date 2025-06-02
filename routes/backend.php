@@ -7,8 +7,10 @@ use App\Http\Controllers\Web\Backend\ContactController;
 use App\Http\Controllers\Web\Backend\KeyFeatureController;
 use App\Http\Controllers\Web\Backend\ProductController;
 use App\Http\Controllers\Web\Backend\RetailerController;
+use App\Http\Controllers\Web\Backend\SettingController;
 use App\Http\Controllers\Web\Backend\SubscriptionController;
 use App\Http\Controllers\Web\Backend\TipsCareController;
+use App\Http\Controllers\Web\Backend\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,6 +19,27 @@ Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+        /*============ Users ==========*/
+        Route::prefix('user')
+            ->name('user.')
+            ->controller(UserController::class)
+            ->group(function () {
+                Route::get('/index', 'index')->name('index');
+                //Route::get('/view/{id}', 'view')->name('view');
+                Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            });
+
+        /*============ Settings ==========*/
+        Route::prefix('setting')
+            ->name('setting.')
+            ->controller(SettingController::class)
+            ->group(function () {
+                Route::get('/app-setting/edit', 'appSettingEdit')->name('appSetting.edit');
+                Route::post('/app-setting/update', 'appSettingUpdate')->name('appSetting.update');
+                //Route::get('/view/{id}', 'view')->name('view');
+                Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            });
 
         /*============ Contact ==========*/
         Route::prefix('contact-list')

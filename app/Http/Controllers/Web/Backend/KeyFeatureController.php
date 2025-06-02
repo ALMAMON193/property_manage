@@ -38,7 +38,7 @@ class KeyFeatureController extends Controller
                     ->rawColumns(['description','image', 'action'])
                     ->make(true);
             }
-            return view('backend.layouts.keyfeatures.index');
+            return view('backend.layouts.users.index');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return redirect()->back()->with('error', 'Something went wrong!');
