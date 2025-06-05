@@ -93,7 +93,7 @@ class ContactApiController extends Controller
         $dob = null;
         if(!empty($request->date_of_birth))
         {
-            $dob = Carbon::createFromFormat('m/d/Y', $request->date_of_birth)->format('Y-m-d');
+            $dob = $request->date_of_birth;
         }
 
 
@@ -151,7 +151,7 @@ class ContactApiController extends Controller
             // save entity representative data
             if(!empty($request->r_date_of_birth))
             {
-                $dob = Carbon::createFromFormat('m/d/Y', $request->r_date_of_birth)->format('Y-m-d');
+                $dob = $request->r_date_of_birth;
             }
             $representative = null;
             if($request->type === 'legal_entity')
@@ -257,7 +257,7 @@ class ContactApiController extends Controller
 
 
     /*======= get all contacts =========*/
-    public function getAllContacts()
+    /*public function getAllContacts()
     {
         // Check if the user is authenticated via the 'api' guard
         if (!auth('api')->check()) {
@@ -266,8 +266,40 @@ class ContactApiController extends Controller
 
         $user = auth('api')->user();
 
-        // Fetch all contacts created by the authenticated user
-        $contacts = $user->contactsCreated;
+        // Get all contacts created by the authenticated user and eager load relationships
+        $contacts = $user->contactsCreated()
+            ->with([
+                'user.bankDetail',   // contact's assigned user and their bank detail
+                'representative'     // contact's representative
+            ])
+            ->get();
+
+        return $this->sendResponse($contacts, 'All contacts retrieved successfully');
+    }*/
+
+    public function getAllContacts()
+    {
+        // Ensure the user is authenticated
+        if (!auth('api')->check()) {
+            return $this->sendError('Please login first', [], 422);
+        }
+
+        $user = auth('api')->user();
+
+        // Get all entity IDs created by this user
+        $ownedEntityIds = $user->entities()->pluck('id');
+
+        // Get all contacts created by this user
+        $contacts = $user->contactsCreated()
+            ->with([
+                'user.bankDetail',
+                'representative',
+                // Load entities where this contact's user is assigned
+                'user.entityAccesses.entity' => function ($query) use ($ownedEntityIds) {
+                    $query->whereIn('id', $ownedEntityIds);
+                }
+            ])
+            ->get();
 
         return $this->sendResponse($contacts, 'All contacts retrieved successfully');
     }

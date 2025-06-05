@@ -20,7 +20,7 @@ class BankDetail extends Model
         'postal_code',
     ];
 
-// Relationships
+    // Relationships
     public function user()
     {
         return $this->belongsTo(User::class);
