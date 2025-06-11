@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\Otp;
 use App\Models\User;
 use App\Trait\ResponseTrait;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -51,7 +52,7 @@ class AuthController extends Controller
             return $this->sendResponse($success, 'Login successful', $token);
 
         } catch (\Exception $e) {
-            \Log::error('Login error', ['error' => $e->getMessage()]);
+            Log::error('Login error', ['error' => $e->getMessage()]);
             return $this->sendError('Something went wrong during login', ['error' => $e->getMessage()], 500);
         }
     }

@@ -1,0 +1,176 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
+
+class StorePropertyRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+         return [
+            'entity_id' => 'nullable|exists:entities,id',
+            'property_type' => 'nullable|in:bulding,unit',
+            'is_condominium' => 'nullable|boolean',
+            'name' => 'nullable|string|max:255',
+            'address' => 'nullable|array',
+            'post_code' => 'nullable|string|max:10',
+            'city' => 'nullable|string|max:255',
+            'country' => 'nullable|string|max:255',
+            'construction_year' => 'nullable|integer|min:1800|max:' . date('Y'),
+            'unit_type' => 'nullable|string|max:255',
+            'tax_number' => 'nullable|string|max:20',
+            'dpe' => 'nullable|string|max:255',
+            'dpe_validity' => 'nullable|date',
+            'floor' => 'nullable|integer',
+            'lot_number' => 'nullable|string|max:255',
+            'cadastral_reference' => 'nullable|string',
+
+            // Unit Destination Premises
+            'unit_destination_premises.auth_com_act' => 'nullable|string',
+            'unit_destination_premises.proh_com_act' => 'nullable|string',
+            'unit_destination_premises.excl_clause' => 'nullable|boolean',
+            'unit_destination_premises.auth_lib_prof' => 'nullable|string',
+            'unit_destination_premises.proh_lib_prof' => 'nullable|string',
+            'unit_destination_premises.excl_clause_prof' => 'nullable|boolean',
+            'unit_destination_premises.auth_rel_act' => 'nullable|string',
+            'unit_destination_premises.excl_veh_park_type' => 'nullable|string',
+            'unit_destination_premises.proh_store' => 'nullable|boolean',
+            'unit_destination_premises.spec_use_lot' => 'nullable|string',
+            'unit_destination_premises.spec_proh_lot' => 'nullable|string',
+
+            // Unit Other Facilities
+            'unit_other_facilities.individual_heating' => 'nullable|boolean',
+            'unit_other_facilities.individual_heating_type' => 'nullable|in:electric,gas,oil',
+            'unit_other_facilities.individual_heating_radiators' => 'nullable|boolean',
+            'unit_other_facilities.individual_heating_radiators_type' => 'nullable|in:panel,convector,towel',
+            'unit_other_facilities.number_of_radiators' => 'nullable|integer|min:0',
+            'unit_other_facilities.collective_heating' => 'nullable|boolean',
+            'unit_other_facilities.collective_heating_without_individual_meter' => 'nullable|boolean',
+            'unit_other_facilities.collective_heating_with_individual_meter' => 'nullable|boolean',
+            'unit_other_facilities.individual_hot_water' => 'nullable|boolean',
+            'unit_other_facilities.individual_hot_water_type' => 'nullable|in:electric,gas,solar',
+            'unit_other_facilities.collective_hot_water' => 'nullable|boolean',
+            'unit_other_facilities.collective_hot_water_without_individual_meter' => 'nullable|boolean',
+            'unit_other_facilities.collective_hot_water_with_individual_meter' => 'nullable|boolean',
+            'unit_other_facilities.vmc_ventilation' => 'nullable|boolean',
+            'unit_other_facilities.vmc_type' => 'nullable|in:natural,mechanical,hybrid',
+            'unit_other_facilities.telephone_connection' => 'nullable|boolean',
+            'unit_other_facilities.telephone_connection_active_line' => 'nullable|boolean',
+            'unit_other_facilities.fiber_internet_connection' => 'nullable|boolean',
+            'unit_other_facilities.television_connection_antenna_type' => 'nullable|in:terrestrial,satellite,cable',
+            'unit_other_facilities.television_connection_number_of_tv_sockets' => 'nullable|integer|min:0',
+            'unit_other_facilities.individual_water_meter_meter_number' => 'nullable|string|max:255',
+            'unit_other_facilities.individual_electricity_meter_meter_number' => 'nullable|string|max:255',
+            'unit_other_facilities.individual_gas_meter_meter_number' => 'nullable|string|max:255',
+
+            // Bathroom Facilities
+            'bathroom_facilities.shower' => 'nullable|boolean',
+            'bathroom_facilities.shower_type' => 'nullable|in:standard,rain,handheld',
+            'bathroom_facilities.bathtub' => 'nullable|boolean',
+            'bathroom_facilities.bathtub_type' => 'nullable|in:standard,jacuzzi,corner',
+            'bathroom_facilities.washbasin' => 'nullable|boolean',
+            'bathroom_facilities.washbasin_type' => 'nullable|in:single,double,pedestal',
+            'bathroom_facilities.wc' => 'nullable|boolean',
+            'bathroom_facilities.wc_type' => 'nullable|in:standard,bidet,wall-hung',
+            'bathroom_facilities.towel_dryers' => 'nullable|boolean',
+            'bathroom_facilities.mirror' => 'nullable|boolean',
+            'bathroom_facilities.bathroom_lighting' => 'nullable|boolean',
+            'bathroom_facilities.washbasin_furniture' => 'nullable|boolean',
+            'bathroom_facilities.cupboards' => 'nullable|boolean',
+            'bathroom_facilities.dryer' => 'nullable|boolean',
+
+            // Unit Kitchen Facilities
+            'unit_kitchen_facilities.cuisine_type' => 'nullable|in:Equipped,Furnished,Kitchenette,Not Equipped,Kitchen Area',
+            'unit_kitchen_facilities.cooking_plates' => 'nullable|boolean',
+            'unit_kitchen_facilities.cooking_plate_type' => 'nullable|in:electric,gas,induction',
+            'unit_kitchen_facilities.number_of_burners' => 'nullable|integer|min:0',
+            'unit_kitchen_facilities.oven' => 'nullable|boolean',
+            'unit_kitchen_facilities.oven_type' => 'nullable|in:electric,gas,microwave',
+            'unit_kitchen_facilities.fridge' => 'nullable|boolean',
+            'unit_kitchen_facilities.refrigerator_type' => 'nullable|in:single,double,side-by-side',
+            'unit_kitchen_facilities.refrigerator_capacity' => 'nullable|string|max:255',
+            'unit_kitchen_facilities.freezer' => 'nullable|boolean',
+            'unit_kitchen_facilities.extractor_hood' => 'nullable|boolean',
+            'unit_kitchen_facilities.microwave' => 'nullable|boolean',
+            'unit_kitchen_facilities.dishwasher' => 'nullable|boolean',
+            'unit_kitchen_facilities.washing_machine' => 'nullable|integer|min:0',
+
+            // Unit Comfort Elements
+            'unit_comfort_elements.balcony' => 'nullable|boolean',
+            'unit_comfort_elements.balcony_surface' => 'nullable|string|max:255',
+            'unit_comfort_elements.balcony_exposure' => 'nullable|string|max:255',
+            'unit_comfort_elements.terrace' => 'nullable|boolean',
+            'unit_comfort_elements.terrace_surface' => 'nullable|string|max:255',
+            'unit_comfort_elements.terrace_exposure' => 'nullable|string|max:255',
+            'unit_comfort_elements.terrace_type' => 'nullable|in:open,covered,semi-covered',
+            'unit_comfort_elements.private_garden' => 'nullable|boolean',
+            'unit_comfort_elements.private_garden_area' => 'nullable|string|max:255',
+            'unit_comfort_elements.private_garden_description' => 'nullable|string',
+            'unit_comfort_elements.private_celller' => 'nullable|boolean',
+            'unit_comfort_elements.private_parking' => 'nullable|boolean',
+            'unit_comfort_elements.private_parking_location' => 'nullable|string|max:255',
+            'unit_comfort_elements.private_parking_level' => 'nullable|string|max:255',
+            'unit_comfort_elements.private_garage' => 'nullable|boolean',
+            'unit_comfort_elements.private_garage_location' => 'nullable|string|max:255',
+            'unit_comfort_elements.private_garage_level' => 'nullable|string|max:255',
+            'unit_comfort_elements.other_elements' => 'nullable|string',
+            'unit_comfort_elements.air_conditioning' => 'nullable|boolean',
+            'unit_comfort_elements.air_conditioning_type' => 'nullable|in:split,central,portable',
+            'unit_comfort_elements.air_condition_mode' => 'nullable|in:cool,heat,auto',
+            'unit_comfort_elements.alarm' => 'nullable|boolean',
+            'unit_comfort_elements.alarm_type' => 'nullable|string|max:255',
+            'unit_comfort_elements.alarm_remote_monitoring' => 'nullable|string|max:255',
+            'unit_comfort_elements.metal_curtains' => 'nullable|boolean',
+            'unit_comfort_elements.secure_showcase' => 'nullable|boolean',
+            'unit_comfort_elements.smoke_extraction' => 'nullable|boolean',
+            'unit_comfort_elements.pmr_access' => 'nullable|boolean',
+            'unit_comfort_elements.pmr_access_details' => 'nullable|string',
+            'unit_comfort_elements.other_specific_equipment' => 'nullable|string',
+            'unit_comfort_elements.specific_access_condition' => 'nullable|string',
+            'unit_comfort_elements.specific_use_condition' => 'nullable|string',
+
+            // Building Facilities
+            'building_facilities.entrance_hall' => 'required|string|max:255',
+            'building_facilities.stairs' => 'required|string|max:255',
+            'building_facilities.corridors' => 'required|string|max:255',
+            'building_facilities.caretaker' => 'nullable|boolean',
+            'building_facilities.elevator' => 'nullable|boolean',
+            'building_facilities.elevator_access_condition' => 'nullable|string',
+            'building_facilities.bicycle_storage' => 'nullable|boolean',
+            'building_facilities.common_courtyard' => 'nullable|boolean',
+            'building_facilities.common_garden' => 'nullable|boolean',
+            'building_facilities.garbage_room' => 'nullable|boolean',
+            'building_facilities.other_common_areas' => 'nullable|string',
+            'building_facilities.collective_equipment' => 'nullable|string',
+
+            // Unit Details
+            'unit_details.num_of_living_room' => 'required|integer|min:0',
+            'unit_details.num_of_bedroom' => 'required|integer|min:0',
+            'unit_details.num_of_toilet' => 'required|integer|min:0',
+            'unit_details.habitable_area' => 'required|string|max:255',
+            'unit_details.commercial_area' => 'required|string|max:255',
+            'unit_details.sales_area' => 'required|string|max:255',
+            'unit_details.storage_area' => 'required|integer|min:0',
+            'unit_details.office_space' => 'required|string|max:255',
+            'unit_details.reserve_area' => 'required|string|max:255',
+            'unit_details.sanitary_area' => 'required|string|max:255',
+            'unit_details.professional_surface' => 'required|string|max:255',
+            'unit_details.reception_area' => 'required|string|max:255',
+            'unit_details.waiting_room_area' => 'required|string|max:255',
+            'unit_details.consultation_area' => 'required|string|max:255',
+            'unit_details.parking_type' => 'required|string|max:255',
+            'unit_details.parking_lease_length' => 'required|string|max:255',
+            'unit_details.parking_lease_width' => 'required|string|max:255',
+            'unit_details.parking_lease_height' => 'required|string|max:255',
+            'unit_details.property_type' => 'required|string|max:255',
+            'unit_details.other_type_of_lot' => 'required|string|max:255',
+        ];
+    }
+}
