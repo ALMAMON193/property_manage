@@ -1,15 +1,15 @@
 <?php
 
 
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\ContactApiController;
-use App\Http\Controllers\API\FilterApiController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\OtpController;
-use App\Http\Controllers\API\ProductApiController;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\FilterApiController;
 use App\Http\Controllers\API\ReviewApiController;
+use App\Http\Controllers\API\ContactApiController;
+use App\Http\Controllers\API\ProductApiController;
 use App\Http\Controllers\API\SocialLoginController;
 use App\Http\Controllers\API\SubscriptionApiController;
-use Illuminate\Support\Facades\Route;
 
 
 Route::post('/social-login', [SocialLoginController::class, 'SocialLogin']);
@@ -38,16 +38,9 @@ Route::middleware('auth:api')->group(function () {
 Route::post('/send-otp', [OtpController::class, 'sendOtp']);
 Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 
-
-
-
 /*=========== GET LISTED contact form ==============*/
 Route::post('/contact/store', [ContactApiController::class, 'store']);
-
-
 Route::post('/subscribe/store', [SubscriptionApiController::class, 'store']);
-
-
 
 /*============ PRODUCT API ============*/
 Route::get('/products', [ProductApiController::class, 'index']);
@@ -66,3 +59,5 @@ Route::get('/get-filtered-products', [FilterApiController::class, 'getFilteredPr
 Route::get('/product/{product_id}/reviews', [ReviewApiController::class, 'getProductReview']);
 //======= shipping review
 Route::get('/shipping/{product_id}/reviews', [ReviewApiController::class, 'getShippingReview']);
+
+require __DIR__.'/mamon.php';
