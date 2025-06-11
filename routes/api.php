@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\OtpController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\EntityApiController;
 use App\Http\Controllers\API\FilterApiController;
 use App\Http\Controllers\API\ReviewApiController;
 use App\Http\Controllers\API\ContactApiController;
@@ -25,6 +26,29 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/profile/update', [SocialLoginController::class, 'updateProfile']);
     Route::post('/profile/image/update', [SocialLoginController::class, 'updateProfileImage']);
+
+    /*============ Entity routes ==========*/
+    Route::prefix('entity')
+        ->controller(EntityApiController::class)
+        ->group(function () {
+            Route::get('/get-all', 'getAllEntities');
+            Route::get('/get-all-accessible', 'getAccessibleEntities');
+            Route::post('/store', 'storeEntity');
+            Route::get('/edit/{id}', 'edit');
+            Route::post('/update/{id}', 'update');
+            Route::post('/status/{id}', 'status');
+            Route::delete('/destroy/{id}', 'destroy');
+        });
+
+    /*============ Contact routes ==========*/
+    Route::prefix('contact')
+        ->controller(ContactApiController::class)
+        ->group(function () {
+            Route::post('/store', 'store');
+            Route::get('/get-all', 'getAllContacts');
+            Route::get('/individuals', 'getIndividualContacts');
+            Route::get('/legal-entities', 'getLegalEntityContacts');
+        });
 
     /*======= REVIEW =======*/
     Route::post('/product/review', [ReviewApiController::class, 'postProductReview']);

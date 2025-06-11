@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('entity_accesses', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('created_by_id')->nullable();
-            $table->enum('type', ['individual', 'legal_entity']);
-            $table->string('category');
-            $table->text('additional_info')->nullable();
             $table->timestamps();
 
+            $table->foreign('entity_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('created_by_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('entity_accesses');
     }
 };

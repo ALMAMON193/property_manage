@@ -12,4 +12,20 @@ class Entity extends Model
         'name',
         'type'
     ];
+
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function assignedUsers()
+    {
+        return $this->belongsToMany(User::class, 'entity_accesses');
+    }
+
+    public function entityAccesses()
+    {
+        return $this->hasMany(EntityAccess::class);
+    }
 }
