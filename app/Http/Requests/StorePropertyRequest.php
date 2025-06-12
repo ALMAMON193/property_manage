@@ -91,14 +91,14 @@ class StorePropertyRequest extends FormRequest
 
             // Unit Kitchen Facilities
             'unit_kitchen_facilities.property_id' => 'nullable|exists:properties,id',
-            'unit_kitchen_facilities.kitchen_type' => 'nullable|in:Equipped,Furnished,Kitchenette,Not Equipped,Kitchen Area',
+            'unit_kitchen_facilities.kitchen_type' => 'nullable|in:equipped,furnished,kitchenette,not_equipped,kitchen_area',
             'unit_kitchen_facilities.cooking_plates' => 'nullable|boolean',
             'unit_kitchen_facilities.cooking_plate_type' => 'nullable|in:electric,gas,induction',
             'unit_kitchen_facilities.number_of_burners' => 'nullable|integer|min:0',
             'unit_kitchen_facilities.oven' => 'nullable|boolean',
             'unit_kitchen_facilities.oven_type' => 'nullable|in:electric,gas,microwave',
             'unit_kitchen_facilities.fridge' => 'nullable|boolean',
-            'unit_kitchen_facilities.refrigerator_type' => 'nullable|in:single,double,side-by-side',
+            'unit_kitchen_facilities.refrigerator_type' => 'nullable|in:single_side,double_side',
             'unit_kitchen_facilities.refrigerator_capacity' => 'nullable|string|max:255',
             'unit_kitchen_facilities.freezer' => 'nullable|boolean',
             'unit_kitchen_facilities.extractor_hood' => 'nullable|boolean',
