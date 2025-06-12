@@ -29,7 +29,6 @@ return new class extends Migration
             $table->integer('floor')->nullable();
             $table->string('lot_number')->nullable();
             $table->text('cadastral_reference')->nullable();
-
             $table->timestamps();
 
             $table->foreign('entity_id')->references('id')->on('entities')->onDelete('set null');

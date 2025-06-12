@@ -13,6 +13,7 @@ class UnitDetails extends Model
         'property_id',
         'num_of_living_room',
         'num_of_bedroom',
+        'num_of_bathroom',
         'num_of_toilet',
         'habitable_area',
         'commercial_area',

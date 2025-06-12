@@ -24,7 +24,6 @@ class BathroomFacilities extends Model
         'bathroom_lighting',
         'washbasin_furniture',
         'cupboards',
-        'dryer',
     ];
 
     protected $casts = [
@@ -37,7 +36,6 @@ class BathroomFacilities extends Model
         'bathroom_lighting' => 'boolean',
         'washbasin_furniture' => 'boolean',
         'cupboards' => 'boolean',
-        'dryer' => 'boolean',
     ];
 
     public function property()

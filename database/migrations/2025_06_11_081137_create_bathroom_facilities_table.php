@@ -27,7 +27,6 @@ return new class extends Migration
             $table->boolean('bathroom_lighting')->default(false);
             $table->boolean('washbasin_furniture')->default(false);
             $table->boolean('cupboards')->default(false);
-            $table->boolean('dryer')->default(false);
             $table->timestamps();
             $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
         });
