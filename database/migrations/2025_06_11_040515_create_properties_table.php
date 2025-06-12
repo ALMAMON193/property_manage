@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('entity_id')->nullable();
-            $table->enum('property_type', ['bulding', 'unit'])->nullable();
+            $table->enum('property_type', ['building', 'unit'])->nullable();
             $table->boolean('is_condominium')->nullable();
             $table->string('name')->nullable();
             $table->json('address')->nullable();

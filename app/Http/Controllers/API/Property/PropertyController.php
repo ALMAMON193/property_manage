@@ -4,16 +4,9 @@ namespace App\Http\Controllers\API\Property;
 
 use Exception;
 use App\Models\Property;
-use App\Models\UnitDetails;
 use App\Trait\ResponseTrait;
-use App\Models\BuldingFacilite;
-use App\Models\BathroomFacilities;
 use Illuminate\Support\Facades\DB;
-use App\Models\UnitComfortElements;
-use App\Models\UnitOtherFacilities;
 use App\Http\Controllers\Controller;
-use App\Models\UnitkitchenFacilities;
-use App\Models\UnitDestinationPremises;
 use App\Http\Requests\StorePropertyRequest;
 
 class PropertyController extends Controller
@@ -26,57 +19,58 @@ class PropertyController extends Controller
         DB::beginTransaction();
 
         try {
+            // Create the main Property record
             $property = Property::create($data);
 
+            // Create related records using relationships
             if ($request->has('unit_destination_premises')) {
-                $unitDestinationData = $request->input('unit_destination_premises');
-                $unitDestinationData['property_id'] = $property->id;
-                UnitDestinationPremises::create($unitDestinationData);
+                $property->unitDestinationPremises()->create($data['unit_destination_premises']);
             }
 
             if ($request->has('unit_other_facilities')) {
-                $unitOtherFacilitiesData = $request->input('unit_other_facilities');
-                $unitOtherFacilitiesData['property_id'] = $property->id;
-                UnitOtherFacilities::create($unitOtherFacilitiesData);
+                $property->unitOtherFacilities()->create($data['unit_other_facilities']);
             }
 
             if ($request->has('bathroom_facilities')) {
-                $bathroomFacilitiesData = $request->input('bathroom_facilities');
-                $bathroomFacilitiesData['property_id'] = $property->id;
-                BathroomFacilities::create($bathroomFacilitiesData);
+                $property->bathroomFacilities()->create($data['bathroom_facilities']);
             }
 
             if ($request->has('unit_kitchen_facilities')) {
-                $unitKitchenFacilitiesData = $request->input('unit_kitchen_facilities');
-                $unitKitchenFacilitiesData['property_id'] = $property->id;
-                UnitkitchenFacilities::create($unitKitchenFacilitiesData);
+                $property->unitKitchenFacilities()->create($data['unit_kitchen_facilities']);
             }
 
             if ($request->has('unit_comfort_elements')) {
-                $unitComfortElementsData = $request->input('unit_comfort_elements');
-                $unitComfortElementsData['property_id'] = $property->id;
-                UnitComfortElements::create($unitComfortElementsData);
+                $property->unitComfortElements()->create($data['unit_comfort_elements']);
             }
 
             if ($request->has('building_facilities')) {
-                $buildingFacilitiesData = $request->input('building_facilities');
-                $buildingFacilitiesData['property_id'] = $property->id;
-                BuldingFacilite::create($buildingFacilitiesData);
+                $property->buildingFacilities()->create($data['building_facilities']);
             }
 
             if ($request->has('unit_details')) {
-                $unitDetailsData = $request->input('unit_details');
-                $unitDetailsData['property_id'] = $property->id;
-                UnitDetails::create($unitDetailsData);
+                $property->unitDetails()->create($data['unit_details']);
             }
 
             DB::commit();
-            return $this->sendResponse('Property created successfully', $property, 201);
+
+            // Load relationships for response
+            $property->load([
+                'unitDestinationPremises',
+                'unitOtherFacilities',
+                'bathroomFacilities',
+                'unitKitchenFacilities',
+                'unitComfortElements',
+                'buildingFacilities',
+                'unitDetails'
+            ]);
+            $message = 'Property created successfully.';
+            return $this->sendResponse($property, $message);
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            return $this->sendError('Failed to create property due to database error', ['error' => $e->getMessage()], 500);
         } catch (Exception $e) {
             DB::rollBack();
             return $this->sendError('Failed to create property', ['error' => $e->getMessage()], 500);
         }
     }
-
 }
-

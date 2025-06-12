@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('unitkitchen_facilities', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('property_id');
             $table->enum('cuisine_type', ['Equipped', 'Furnished', 'Kitchenette', 'Not Equipped', 'Kitchen Area'])->nullable();
             $table->boolean('cooking_plates')->default(false);
             $table->enum('cooking_plate_type', ['electric', 'gas', 'induction'])->nullable();
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->boolean('dishwasher')->default(false);
             $table->bigInteger('washing_machine')->nullable();
             $table->timestamps();
+            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
         });
     }
 
