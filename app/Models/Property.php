@@ -10,36 +10,19 @@ class Property extends Model
     use HasFactory;
 
     protected $fillable = [
-        'entity_id',
-        'property_type',
-        'is_condominium',
-        'name',
-        'address',
-        'post_code',
-        'city',
-        'country',
-        'construction_year',
-        'unit_type',
-        'tax_number',
-        'dpe',
-        'dpe_validity',
-        'floor',
-        'lot_number',
-        'cadastral_reference',
+        'entity_id', 'property_type', 'is_condominium', 'name', 'address',
+        'post_code', 'city', 'country', 'construction_year', 'unit_type',
+        'tax_number', 'dpe', 'dpe_validity', 'floor', 'lot_number',
+        'cadastral_reference'
     ];
 
     protected $casts = [
         'address' => 'array',
-        'property_type' => 'string',
         'is_condominium' => 'boolean',
         'dpe_validity' => 'date',
     ];
 
-    public function entity()
-    {
-        return $this->belongsTo(Entity::class);
-    }
-
+    // Relationships
     public function unitDestinationPremises()
     {
         return $this->hasOne(UnitDestinationPremises::class);
@@ -55,6 +38,11 @@ class Property extends Model
         return $this->hasOne(BathroomFacilities::class);
     }
 
+    public function unitKitchenFacilities()
+    {
+        return $this->hasOne(UnitKitchenFacilities::class);
+    }
+
     public function unitComfortElements()
     {
         return $this->hasOne(UnitComfortElements::class);
@@ -64,8 +52,9 @@ class Property extends Model
     {
         return $this->hasOne(BuldingFacilite::class);
     }
-    public function unitKitchenFacilities()
+
+    public function unitDetails()
     {
-        return $this->hasOne(UnitkitchenFacilities::class);
+        return $this->hasOne(UnitDetails::class);
     }
 }

@@ -14,9 +14,9 @@ class StorePropertyRequest extends FormRequest
 
     public function rules(): array
     {
-         return [
+        return [
             'entity_id' => 'nullable|exists:entities,id',
-            'property_type' => 'nullable|in:bulding,unit',
+            'property_type' => 'nullable|in:building,unit',
             'is_condominium' => 'nullable|boolean',
             'name' => 'nullable|string|max:255',
             'address' => 'nullable|array',
@@ -50,7 +50,7 @@ class StorePropertyRequest extends FormRequest
             'unit_other_facilities.individual_heating_type' => 'nullable|in:electric,gas,oil',
             'unit_other_facilities.individual_heating_radiators' => 'nullable|boolean',
             'unit_other_facilities.individual_heating_radiators_type' => 'nullable|in:panel,convector,towel',
-            'unit_other_facilities.number_of_radiators' => 'nullable|integer|min:0',
+            'unit_other_facilities.number_of_dryers' => 'nullable|integer|min:0',
             'unit_other_facilities.collective_heating' => 'nullable|boolean',
             'unit_other_facilities.collective_heating_without_individual_meter' => 'nullable|boolean',
             'unit_other_facilities.collective_heating_with_individual_meter' => 'nullable|boolean',
@@ -137,9 +137,9 @@ class StorePropertyRequest extends FormRequest
             'unit_comfort_elements.specific_use_condition' => 'nullable|string',
 
             // Building Facilities
-            'building_facilities.entrance_hall' => 'required|string|max:255',
-            'building_facilities.stairs' => 'required|string|max:255',
-            'building_facilities.corridors' => 'required|string|max:255',
+            'building_facilities.entrance_hall' => 'nullable|string|max:255', // Changed to nullable
+            'building_facilities.stairs' => 'nullable|string|max:255', // Changed to nullable
+            'building_facilities.corridors' => 'nullable|string|max:255', // Changed to nullable
             'building_facilities.caretaker' => 'nullable|boolean',
             'building_facilities.elevator' => 'nullable|boolean',
             'building_facilities.elevator_access_condition' => 'nullable|string',
@@ -155,22 +155,22 @@ class StorePropertyRequest extends FormRequest
             'unit_details.num_of_bedroom' => 'required|integer|min:0',
             'unit_details.num_of_toilet' => 'required|integer|min:0',
             'unit_details.habitable_area' => 'required|string|max:255',
-            'unit_details.commercial_area' => 'required|string|max:255',
-            'unit_details.sales_area' => 'required|string|max:255',
-            'unit_details.storage_area' => 'required|integer|min:0',
-            'unit_details.office_space' => 'required|string|max:255',
-            'unit_details.reserve_area' => 'required|string|max:255',
-            'unit_details.sanitary_area' => 'required|string|max:255',
-            'unit_details.professional_surface' => 'required|string|max:255',
-            'unit_details.reception_area' => 'required|string|max:255',
-            'unit_details.waiting_room_area' => 'required|string|max:255',
-            'unit_details.consultation_area' => 'required|string|max:255',
-            'unit_details.parking_type' => 'required|string|max:255',
-            'unit_details.parking_lease_length' => 'required|string|max:255',
-            'unit_details.parking_lease_width' => 'required|string|max:255',
-            'unit_details.parking_lease_height' => 'required|string|max:255',
-            'unit_details.property_type' => 'required|string|max:255',
-            'unit_details.other_type_of_lot' => 'required|string|max:255',
+            'unit_details.commercial_area' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.sales_area' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.storage_area' => 'nullable|integer|min:0', // Changed to nullable
+            'unit_details.office_space' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.reserve_area' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.sanitary_area' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.professional_surface' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.reception_area' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.waiting_room_area' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.consultation_area' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.parking_type' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.parking_lease_length' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.parking_lease_width' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.parking_lease_height' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.property_type' => 'nullable|string|max:255', // Changed to nullable
+            'unit_details.other_type_of_lot' => 'nullable|string|max:255', // Changed to nullable
         ];
     }
 }

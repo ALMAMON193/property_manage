@@ -3,7 +3,7 @@ name: Deploy Project to Our Server
 on:
   push:
     branches:
-      - robin
+      - main
 
 jobs:
   FTP-Deploy-Action:
