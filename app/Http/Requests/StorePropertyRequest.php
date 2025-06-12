@@ -47,27 +47,30 @@ class StorePropertyRequest extends FormRequest
 
             // Unit Other Facilities
             'unit_other_facilities.individual_heating' => 'nullable|boolean',
-            'unit_other_facilities.individual_heating_type' => 'nullable|in:electric,gas,oil',
+            'unit_other_facilities.individual_heating_type' => 'nullable|in:electric,gas,fuel_oil,wood,heat_pump',
             'unit_other_facilities.individual_heating_radiators' => 'nullable|boolean',
-            'unit_other_facilities.individual_heating_radiators_type' => 'nullable|in:panel,convector,towel',
-            'unit_other_facilities.number_of_dryers' => 'nullable|integer|min:0',
+            'unit_other_facilities.individual_heating_radiators_type' => 'nullable|in:electric,gas,cast_iron,steel,aluminum',
+            'unit_other_facilities.number_of_radiators' => 'nullable|integer|min:0',
             'unit_other_facilities.collective_heating' => 'nullable|boolean',
             'unit_other_facilities.collective_heating_without_individual_meter' => 'nullable|boolean',
             'unit_other_facilities.collective_heating_with_individual_meter' => 'nullable|boolean',
             'unit_other_facilities.individual_hot_water' => 'nullable|boolean',
-            'unit_other_facilities.individual_hot_water_type' => 'nullable|in:electric,gas,solar',
+            'unit_other_facilities.individual_hot_water_type' => 'nullable|in:electric,gas,solar,thermodynamic',
             'unit_other_facilities.collective_hot_water' => 'nullable|boolean',
             'unit_other_facilities.collective_hot_water_without_individual_meter' => 'nullable|boolean',
             'unit_other_facilities.collective_hot_water_with_individual_meter' => 'nullable|boolean',
             'unit_other_facilities.vmc_ventilation' => 'nullable|boolean',
-            'unit_other_facilities.vmc_type' => 'nullable|in:natural,mechanical,hybrid',
+            'unit_other_facilities.vmc_type' => 'nullable|in:single_flow,double_flow',
             'unit_other_facilities.telephone_connection' => 'nullable|boolean',
             'unit_other_facilities.telephone_connection_active_line' => 'nullable|boolean',
             'unit_other_facilities.fiber_internet_connection' => 'nullable|boolean',
-            'unit_other_facilities.television_connection_antenna_type' => 'nullable|in:terrestrial,satellite,cable',
+            'unit_other_facilities.television_connection_antenna_type' => 'nullable|in:roof_antenna,cable,fiber',
             'unit_other_facilities.television_connection_number_of_tv_sockets' => 'nullable|integer|min:0',
+            'unit_other_facilities.individual_water_meter' => 'nullable|boolean',
             'unit_other_facilities.individual_water_meter_meter_number' => 'nullable|string|max:255',
+            'unit_other_facilities.individual_electricity_meter' => 'nullable|boolean',
             'unit_other_facilities.individual_electricity_meter_meter_number' => 'nullable|string|max:255',
+            'unit_other_facilities.individual_gas_meter' => 'nullable|boolean',
             'unit_other_facilities.individual_gas_meter_meter_number' => 'nullable|string|max:255',
 
             // Bathroom Facilities
@@ -87,7 +90,8 @@ class StorePropertyRequest extends FormRequest
             'bathroom_facilities.dryer' => 'nullable|boolean',
 
             // Unit Kitchen Facilities
-            'unit_kitchen_facilities.cuisine_type' => 'nullable|in:Equipped,Furnished,Kitchenette,Not Equipped,Kitchen Area',
+            'unit_kitchen_facilities.property_id' => 'nullable|exists:properties,id',
+            'unit_kitchen_facilities.kitchen_type' => 'nullable|in:Equipped,Furnished,Kitchenette,Not Equipped,Kitchen Area',
             'unit_kitchen_facilities.cooking_plates' => 'nullable|boolean',
             'unit_kitchen_facilities.cooking_plate_type' => 'nullable|in:electric,gas,induction',
             'unit_kitchen_facilities.number_of_burners' => 'nullable|integer|min:0',
@@ -101,6 +105,16 @@ class StorePropertyRequest extends FormRequest
             'unit_kitchen_facilities.microwave' => 'nullable|boolean',
             'unit_kitchen_facilities.dishwasher' => 'nullable|boolean',
             'unit_kitchen_facilities.washing_machine' => 'nullable|integer|min:0',
+            'unit_kitchen_facilities.dryer' => 'nullable|boolean',
+            'unit_kitchen_facilities.small_household_appliances' => 'nullable|boolean',
+            'unit_kitchen_facilities.small_household_appliances_details' => 'nullable|string|max:255',
+            'unit_kitchen_facilities.high_cupboard' => 'nullable|boolean',
+            'unit_kitchen_facilities.low_cupboard' => 'nullable|boolean',
+            'unit_kitchen_facilities.work_plan' => 'nullable|boolean',
+            'unit_kitchen_facilities.sink' => 'nullable|boolean',
+            'unit_kitchen_facilities.num_of_basins' => 'nullable|boolean',
+            'unit_kitchen_facilities.sink_material' => 'nullable|string|max:255',
+            'unit_kitchen_facilities.kithcen_light' => 'nullable|boolean',
 
             // Unit Comfort Elements
             'unit_comfort_elements.balcony' => 'nullable|boolean',
@@ -153,6 +167,7 @@ class StorePropertyRequest extends FormRequest
             // Unit Details
             'unit_details.num_of_living_room' => 'required|integer|min:0',
             'unit_details.num_of_bedroom' => 'required|integer|min:0',
+            'unit_details.num_of_bathroom' => 'required|integer|min:0',
             'unit_details.num_of_toilet' => 'required|integer|min:0',
             'unit_details.habitable_area' => 'required|string|max:255',
             'unit_details.commercial_area' => 'nullable|string|max:255', // Changed to nullable

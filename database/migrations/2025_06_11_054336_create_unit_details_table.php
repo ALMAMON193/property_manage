@@ -16,10 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('property_id');
             $table->integer('num_of_living_room');
             $table->integer('num_of_bedroom');
+            $table->integer('num_of_bathroom');
             $table->integer('num_of_toilet');
             $table->string('habitable_area');
             $table->string('commercial_area');
-            $table->string('sales_area');
+            $table->string('sales_area');    
             $table->bigInteger('storage_area');
             $table->string('office_space');
             $table->string('reserve_area');

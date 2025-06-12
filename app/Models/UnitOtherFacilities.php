@@ -31,8 +31,11 @@ class UnitOtherFacilities extends Model
         'fiber_internet_connection',
         'television_connection_antenna_type',
         'television_connection_number_of_tv_sockets',
+        'individual_water_meter',
         'individual_water_meter_meter_number',
+        'individual_electricity_meter',
         'individual_electricity_meter_meter_number',
+        'individual_gas_meter',
         'individual_gas_meter_meter_number',
     ];
 
@@ -50,6 +53,9 @@ class UnitOtherFacilities extends Model
         'telephone_connection' => 'boolean',
         'telephone_connection_active_line' => 'boolean',
         'fiber_internet_connection' => 'boolean',
+        'individual_water_meter' => 'boolean',
+        'individual_electricity_meter' => 'boolean',
+        'individual_gas_meter' => 'boolean',
     ];
 
     public function property()
