@@ -28,4 +28,15 @@ class Entity extends Model
     {
         return $this->hasMany(EntityAccess::class);
     }
+
+    public function buildings()
+    {
+        return $this->hasMany(Building::class, 'entity_id');
+    }
+
+    public function units()
+    {
+        return $this->hasMany(Unit::class, 'entity_id');
+    }
+
 }

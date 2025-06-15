@@ -7,6 +7,7 @@ use App\Models\BankDetail;
 use App\Models\Contact;
 use App\Models\EntityAccess;
 use App\Models\EntityRepresentative;
+use App\Models\Property;
 use App\Models\User;
 use App\Trait\ResponseTrait;
 use Illuminate\Http\Request;
@@ -303,4 +304,6 @@ class ContactApiController extends Controller
 
         return $this->sendResponse($contacts, 'All contacts retrieved successfully');
     }
+
+
 }

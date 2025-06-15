@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class UnitOtherFacilities extends Model
+class UnitOtherFacility extends Model
 {
-     use HasFactory;
+    protected $table = 'unit_other_facilities';
 
     protected $fillable = [
-        'property_id',
+        'unit_id',
         'individual_heating',
         'individual_heating_type',
         'individual_heating_radiators',
@@ -34,9 +34,9 @@ class UnitOtherFacilities extends Model
         'individual_water_meter',
         'individual_water_meter_meter_number',
         'individual_electricity_meter',
-        'individual_electricity_meter_meter_number',
+        'individual_electricity_meter_number',
         'individual_gas_meter',
-        'individual_gas_meter_meter_number',
+        'individual_gas_meter_number',
     ];
 
     protected $casts = [
@@ -56,10 +56,12 @@ class UnitOtherFacilities extends Model
         'individual_water_meter' => 'boolean',
         'individual_electricity_meter' => 'boolean',
         'individual_gas_meter' => 'boolean',
+        'number_of_radiators' => 'integer',
+        'television_connection_number_of_tv_sockets' => 'integer',
     ];
 
-    public function property()
+    public function unit()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 }

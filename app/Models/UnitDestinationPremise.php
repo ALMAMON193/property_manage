@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class UnitDestinationPremises extends Model
+class UnitDestinationPremise extends Model
 {
-    use HasFactory;
+    protected $table = 'unit_destination_premises';
 
     protected $fillable = [
-        'property_id',
+        'unit_id',
         'auth_com_act',
         'proh_com_act',
         'excl_clause',
@@ -30,8 +30,8 @@ class UnitDestinationPremises extends Model
         'proh_store' => 'boolean',
     ];
 
-    public function property()
+    public function unit()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 }

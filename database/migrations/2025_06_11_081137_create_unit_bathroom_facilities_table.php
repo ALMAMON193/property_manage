@@ -11,24 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bathroom_facilities', function (Blueprint $table) {
+        Schema::create('unit_bathroom_facilities', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('property_id');
+            $table->unsignedBigInteger('unit_id');
             $table->boolean('shower')->default(false);
-            $table->enum('shower_type', ['standard', 'rain', 'handheld'])->nullable();
+            $table->string('shower_type')->nullable();
             $table->boolean('bathtub')->default(false);
-            $table->enum('bathtub_type', ['standard', 'jacuzzi', 'corner'])->nullable();
+            $table->string('bathtub_type')->nullable();
             $table->boolean('washbasin')->default(false);
-            $table->enum('washbasin_type', ['single', 'double', 'pedestal'])->nullable();
+            $table->string('washbasin_type')->nullable();
             $table->boolean('wc')->default(false);
-            $table->enum('wc_type', ['standard', 'bidet', 'wall-hung'])->nullable();
+            $table->string('wc_type')->nullable();
             $table->boolean('towel_dryers')->default(false);
             $table->boolean('mirror')->default(false);
             $table->boolean('bathroom_lighting')->default(false);
             $table->boolean('washbasin_furniture')->default(false);
             $table->boolean('cupboards')->default(false);
             $table->timestamps();
-            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
+            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
         });
     }
 

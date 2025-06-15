@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class UnitkitchenFacilities extends Model
+class UnitKitchenFacility extends Model
 {
-    use HasFactory;
+    protected $table = 'unit_kitchen_facilities';
 
     protected $fillable = [
-        'property_id',
-        'kitchen_type',
+        'unit_id',
+        'cuisine_type',
         'cooking_plates',
         'cooking_plate_type',
         'number_of_burners',
@@ -34,7 +34,7 @@ class UnitkitchenFacilities extends Model
         'sink',
         'num_of_basins',
         'sink_material',
-        'kithcen_light'
+        'kitchen_light',
     ];
 
     protected $casts = [
@@ -45,6 +45,7 @@ class UnitkitchenFacilities extends Model
         'extractor_hood' => 'boolean',
         'microwave' => 'boolean',
         'dishwasher' => 'boolean',
+        'washing_machine' => 'boolean',
         'dryer' => 'boolean',
         'small_household_appliances' => 'boolean',
         'high_cupboard' => 'boolean',
@@ -52,10 +53,12 @@ class UnitkitchenFacilities extends Model
         'work_plan' => 'boolean',
         'sink' => 'boolean',
         'num_of_basins' => 'boolean',
-        'kithcen_light' => 'boolean'
+        'kitchen_light' => 'boolean',
+        'number_of_burners' => 'integer',
     ];
-    public function property()
+
+    public function unit()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 }

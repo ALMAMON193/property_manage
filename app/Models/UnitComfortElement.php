@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class UnitComfortElements extends Model
+class UnitComfortElement extends Model
 {
-     use HasFactory;
+    protected $table = 'unit_comfort_elements';
 
     protected $fillable = [
-        'property_id',
+        'unit_id',
         'balcony',
         'balcony_surface',
         'balcony_exposure',
@@ -21,7 +21,7 @@ class UnitComfortElements extends Model
         'private_garden',
         'private_garden_area',
         'private_garden_description',
-        'private_celller',
+        'private_celllar',
         'private_parking',
         'private_parking_location',
         'private_parking_level',
@@ -49,7 +49,7 @@ class UnitComfortElements extends Model
         'balcony' => 'boolean',
         'terrace' => 'boolean',
         'private_garden' => 'boolean',
-        'private_celller' => 'boolean',
+        'private_celllar' => 'boolean',
         'private_parking' => 'boolean',
         'private_garage' => 'boolean',
         'air_conditioning' => 'boolean',
@@ -60,8 +60,8 @@ class UnitComfortElements extends Model
         'pmr_access' => 'boolean',
     ];
 
-    public function property()
+    public function unit()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 }

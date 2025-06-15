@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Web\Backend;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Models\Property;
+use App\Trait\ResponseTrait;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class ContactController extends Controller
 {
+    use ResponseTrait;
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -61,4 +64,7 @@ class ContactController extends Controller
             return response()->json(['errors' => true, 'message' => 'Data failed to delete']);
         }
     }
+
+
+
 }

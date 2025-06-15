@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API\Property;
 
+use App\Models\Building;
+use App\Models\Unit;
 use Exception;
 use App\Models\Property;
 use App\Trait\ResponseTrait;
@@ -19,52 +21,87 @@ class PropertyController extends Controller
         DB::beginTransaction();
 
         try {
-            // Create the main Property record
-            $property = Property::create($data);
+            $building = null;
+            $unit = null;
 
-            // Create related records using relationships
-            if ($request->has('unit_destination_premises')) {
-                $property->unitDestinationPremises()->create($data['unit_destination_premises']);
+            // Handle existing building or create new one
+            if (isset($data['building']) && !empty(array_filter($data['building']))) {
+                $buildingData = $data['building'];
+                $building = Building::create($buildingData);
+
+                // Create building facilities if provided
+                if (isset($buildingData['building_facilities']) && !empty($buildingData['building_facilities'])) {
+                    $building->buildingFacilities()->create($buildingData['building_facilities']);
+                }
+            } elseif (isset($data['unit']['building_id'])) {
+                $building = Building::find($data['unit']['building_id']);
+                if (!$building) {
+                    return $this->sendError('Building not found', [], 404);
+                }
             }
 
-            if ($request->has('unit_other_facilities')) {
-                $property->unitOtherFacilities()->create($data['unit_other_facilities']);
-            }
+            // Handle existing unit or create new one
+            if (isset($data['unit']['unit_id'])) {
+                $unit = Unit::find($data['unit']['unit_id']);
+                if (!$unit) {
+                    return $this->sendError('Unit not found', [], 404);
+                }
+                if ($building) {
+                    $unit->building_id = $building->id;
+                    $unit->save();
+                }
+            } elseif (isset($data['unit']) && !empty(array_filter($data['unit']))) {
+                $unitData = $data['unit'];
+                if ($building) {
+                    $unitData['building_id'] = $building->id;
+                } elseif (!isset($unitData['building_id']) || !$unitData['building_id']) {
+                    return $this->sendError('Unit must be associated with a building', [], 400);
+                }
+                $unit = Unit::create($unitData);
 
-            if ($request->has('bathroom_facilities')) {
-                $property->bathroomFacilities()->create($data['bathroom_facilities']);
-            }
-
-            if ($request->has('unit_kitchen_facilities')) {
-                $property->unitKitchenFacilities()->create($data['unit_kitchen_facilities']);
-            }
-
-            if ($request->has('unit_comfort_elements')) {
-                $property->unitComfortElements()->create($data['unit_comfort_elements']);
-            }
-
-            if ($request->has('building_facilities')) {
-                $property->buildingFacilities()->create($data['building_facilities']);
-            }
-
-            if ($request->has('unit_details')) {
-                $property->unitDetails()->create($data['unit_details']);
+                // Create related records for unit if data is provided
+                if (isset($unitData['unit_destination_premises']) && !empty($unitData['unit_destination_premises'])) {
+                    $unit->unitDestinationPremises()->create($unitData['unit_destination_premises']);
+                }
+                if (isset($unitData['unit_other_facilities']) && !empty($unitData['unit_other_facilities'])) {
+                    $unit->unitOtherFacilities()->create($unitData['unit_other_facilities']);
+                }
+                if (isset($unitData['unit_bathroom_facilities']) && !empty($unitData['unit_bathroom_facilities'])) {
+                    $unit->unitBathroomFacilities()->create($unitData['unit_bathroom_facilities']);
+                }
+                if (isset($unitData['unit_kitchen_facilities']) && !empty($unitData['unit_kitchen_facilities'])) {
+                    $unit->unitKitchenFacilities()->create($unitData['unit_kitchen_facilities']);
+                }
+                if (isset($unitData['unit_comfort_elements']) && !empty($unitData['unit_comfort_elements'])) {
+                    $unit->unitComfortElements()->create($unitData['unit_comfort_elements']);
+                }
+                if (isset($unitData['unit_details']) && !empty($unitData['unit_details'])) {
+                    $unit->unitDetails()->create($unitData['unit_details']);
+                }
             }
 
             DB::commit();
 
             // Load relationships for response
-            $property->load([
-                'unitDestinationPremises',
-                'unitOtherFacilities',
-                'bathroomFacilities',
-                'unitKitchenFacilities',
-                'unitComfortElements',
-                'buildingFacilities',
-                'unitDetails'
-            ]);
+            $responseData = [];
+            if ($building) {
+                $building->load(['buildingFacilities']);
+                $responseData['building'] = $building;
+            }
+            if ($unit) {
+                $unit->load([
+                    'unitDestinationPremises',
+                    'unitOtherFacilities',
+                    'unitBathroomFacilities',
+                    'unitKitchenFacilities',
+                    'unitComfortElements',
+                    'unitDetails'
+                ]);
+                $responseData['unit'] = $unit;
+            }
+
             $message = 'Property created successfully.';
-            return $this->sendResponse($property, $message);
+            return $this->sendResponse($responseData, $message);
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();
             return $this->sendError('Failed to create property due to database error', ['error' => $e->getMessage()], 500);
@@ -73,4 +110,68 @@ class PropertyController extends Controller
             return $this->sendError('Failed to create property', ['error' => $e->getMessage()], 500);
         }
     }
+
+
+    public function getAllBuildings($entityId)
+    {
+        // Check if the user is authenticated via the 'api' guard
+        if (!auth('api')->check()) {
+            return $this->sendError('Please login first', [], 422);
+        }
+
+        $user = auth('api')->user();
+
+        // Verify the entity belongs to the authenticated user
+        $entity = $user->entities()->where('id', $entityId)->first();
+
+        if (!$entity) {
+            return $this->sendError('Entity not found or not accessible by this user.', [], 404);
+        }
+
+        // Fetch buildings for the specific entity
+        $buildings = $entity->buildings()
+            ->select('id', 'name as building_name', 'entity_id')
+            ->get();
+
+        if ($buildings->isEmpty()) {
+            return $this->sendResponse([], 'No buildings found for this entity.', null, 200);
+        }
+
+        return $this->sendResponse($buildings, 'Buildings retrieved successfully.', null, 200);
+    }
+
+
+    public function getUnitsWithoutBuilding($entityId)
+    {
+        // Check if the user is authenticated via the 'api' guard
+        if (!auth('api')->check()) {
+            return $this->sendError('Please login first', [], 422);
+        }
+
+        $user = auth('api')->user();
+
+        // Verify the entity belongs to the authenticated user
+        $entity = $user->entities()->where('id', $entityId)->first();
+
+        if (!$entity) {
+            return $this->sendError('Entity not found or not accessible by this user.', [], 404);
+        }
+
+        // Fetch units with no building_id for the specific entity
+        $units = $entity->units()
+            ->select('id as unit_id', 'name', 'entity_id')
+            ->whereNull('building_id')
+            ->get();
+
+        if ($units->isEmpty()) {
+            return $this->sendResponse([], 'No units without building found for this entity.', null, 200);
+        }
+
+        return $this->sendResponse($units, 'Units without building retrieved successfully.', null, 200);
+    }
+
+
+
+
+
 }

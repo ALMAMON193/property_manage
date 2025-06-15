@@ -25,36 +25,46 @@ class Property extends Model
     // Relationships
     public function unitDestinationPremises()
     {
-        return $this->hasOne(UnitDestinationPremises::class);
+        return $this->hasOne(UnitDestinationPremise::class);
     }
 
     public function unitOtherFacilities()
     {
-        return $this->hasOne(UnitOtherFacilities::class);
+        return $this->hasOne(UnitOtherFacility::class);
     }
 
     public function bathroomFacilities()
     {
-        return $this->hasOne(BathroomFacilities::class);
+        return $this->hasOne(UnitBathroomFacility::class);
     }
 
     public function unitKitchenFacilities()
     {
-        return $this->hasOne(UnitKitchenFacilities::class);
+        return $this->hasOne(UnitKitchenFacility::class);
     }
 
     public function unitComfortElements()
     {
-        return $this->hasOne(UnitComfortElements::class);
+        return $this->hasOne(UnitComfortElement::class);
     }
 
     public function buildingFacilities()
     {
-        return $this->hasOne(BuldingFacilite::class);
+        return $this->hasOne(BuildingFacility::class);
     }
 
     public function unitDetails()
     {
-        return $this->hasOne(UnitDetails::class);
+        return $this->hasOne(UnitDetail::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Property::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Property::class, 'parent_id');
     }
 }
