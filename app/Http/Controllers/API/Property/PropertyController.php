@@ -54,9 +54,11 @@ class PropertyController extends Controller
                 $unitData = $data['unit'];
                 if ($building) {
                     $unitData['building_id'] = $building->id;
-                } elseif (!isset($unitData['building_id']) || !$unitData['building_id']) {
-                    return $this->sendError('Unit must be associated with a building', [], 400);
                 }
+                /*elseif (!isset($unitData['building_id']) || !$unitData['building_id']) {
+                    return $this->sendError('Unit must be associated with a building', [], 400);
+                }*/
+
                 $unit = Unit::create($unitData);
 
                 // Create related records for unit if data is provided
