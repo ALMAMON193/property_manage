@@ -11,6 +11,7 @@ class Unit extends Model
     protected $fillable = [
         'entity_id',
         'building_id',
+        'name',
         'type',
         'address',
         'post_code',

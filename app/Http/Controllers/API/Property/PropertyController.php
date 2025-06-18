@@ -174,6 +174,68 @@ class PropertyController extends Controller
 
 
 
+    public function getPropertiesByEntity($entityId)
+    {
+        // Check if the user is authenticated via the 'api' guard
+        if (!auth('api')->check()) {
+            return $this->sendError('Please login first', [], 422);
+        }
+
+        $user = auth('api')->user();
+
+        // Verify the entity belongs to the authenticated user
+        $entity = $user->entities()->where('id', $entityId)->first();
+
+        if (!$entity) {
+            return $this->sendError('Entity not found or not accessible by this user.', [], 404);
+        }
+
+        // Fetch buildings for the specific entity
+        $buildings = $entity->buildings()
+            ->select('id as building_id', 'name as building_name', 'entity_id')
+            ->get()
+            ->map(function ($building) {
+                return [
+                    'property_name' => $building->building_name,
+                    'building_id' => $building->building_id,
+                    'unit_id' => null,
+                ];
+            });
+
+        // Fetch units with their building names if building_id exists
+        $units = Unit::where('units.entity_id', $entityId) // Specify units.entity_id to resolve ambiguity
+        ->leftJoin('buildings', 'units.building_id', '=', 'buildings.id')
+            ->select(
+                'units.id as unit_id',
+                'units.name as unit_name',
+                'units.entity_id',
+                'units.building_id',
+                'buildings.name as building_name'
+            )
+            ->get()
+            ->map(function ($unit) {
+                $propertyName = $unit->building_id && $unit->building_name
+                    ? "{$unit->building_name} - {$unit->unit_name}"
+                    : $unit->unit_name;
+                return [
+                    'property_name' => $propertyName,
+                    'building_id' => $unit->building_id,
+                    'unit_id' => $unit->unit_id,
+                ];
+            });
+
+        // Merge buildings and units
+        $properties = $buildings->merge($units);
+
+        if ($properties->isEmpty()) {
+            return $this->sendResponse([], 'No properties found for this entity.', null, 200);
+        }
+
+        return $this->sendResponse($properties, 'Properties retrieved successfully.', null, 200);
+    }
+
+
+
 
 
 }
