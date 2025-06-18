@@ -24,7 +24,7 @@ class LeaseStoreRequest extends FormRequest
        return [
             // leases table
             'tenant_id' => 'nullable|exists:tenants,id',
-            'property_id' => 'nullable',
+            'property_id' => 'required',
             'property_type' => 'nullable|string|max:255',
             'guarantor' => 'required|string|max:255',
 

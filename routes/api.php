@@ -79,7 +79,5 @@ Route::get('/get-casings', [FilterApiController::class, 'getCasings']);
 Route::get('/get-grains', [FilterApiController::class, 'getGrains']);
 Route::get('/get-filtered-products', [FilterApiController::class, 'getFilteredProducts']);
 
-Route::middleware('auth:api')->group(function () {
-    Route::post('/create-lease', [LeaseApiController::class, 'createLease']);
-   });
+
 require __DIR__.'/mamon.php';
