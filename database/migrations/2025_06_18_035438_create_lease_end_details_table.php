@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leases', function (Blueprint $table) {
+        Schema::create('lease_end_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tenant_id')->nullable();
-            $table->unsignedBigInteger('property_id');
-            $table->string('property_type')->nullable();
-            $table->string('guarantor');
+            $table->unsignedBigInteger('lease_id');
+            $table->date('departure_date_of_the_tenant')->nullable();
+            $table->decimal('deposit_to_be_returned', 10, 2)->nullable();
+            $table->date('date_of_return_of_the_security_deposit')->nullable();
             $table->timestamps();
+            
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leases');
+        Schema::dropIfExists('lease_end_details');
     }
 };

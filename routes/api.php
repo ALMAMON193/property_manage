@@ -11,6 +11,7 @@ use App\Http\Controllers\API\ContactApiController;
 use App\Http\Controllers\API\ProductApiController;
 use App\Http\Controllers\API\SocialLoginController;
 use App\Http\Controllers\API\SubscriptionApiController;
+use App\Http\Controllers\API\Property\LeaseApiController;
 
 
 Route::post('/social-login', [SocialLoginController::class, 'SocialLogin']);
@@ -78,10 +79,7 @@ Route::get('/get-casings', [FilterApiController::class, 'getCasings']);
 Route::get('/get-grains', [FilterApiController::class, 'getGrains']);
 Route::get('/get-filtered-products', [FilterApiController::class, 'getFilteredProducts']);
 
-
-/*============ review ==========*/
-Route::get('/product/{product_id}/reviews', [ReviewApiController::class, 'getProductReview']);
-//======= shipping review
-Route::get('/shipping/{product_id}/reviews', [ReviewApiController::class, 'getShippingReview']);
-
+Route::middleware('auth:api')->group(function () {
+    Route::post('/create-lease', [LeaseApiController::class, 'createLease']);
+   });
 require __DIR__.'/mamon.php';

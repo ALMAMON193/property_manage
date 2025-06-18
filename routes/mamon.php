@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Property\LeaseApiController;
 use App\Http\Controllers\API\Property\PropertyController;
 
 Route::middleware('auth:api')->group(function () {
@@ -9,4 +10,5 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/buildings/{entityId}', [PropertyController::class, 'getAllBuildings']);
     Route::get('/properties/{entityId}', [PropertyController::class, 'getPropertiesByEntity']);
 });
+
 
