@@ -95,10 +95,10 @@ class AuthController extends Controller
             );
 
             // Send OTP via email
-            Mail::raw("Your OTP code is: $otp", function ($message) use ($request) {
+            /*Mail::raw("Your OTP code is: $otp", function ($message) use ($request) {
                 $message->to($request->email)
                     ->subject('Your OTP Code');
-            });
+            });*/
 
             // Prepare response data
             $success = [
@@ -109,7 +109,7 @@ class AuthController extends Controller
                 'user_type' => $user->user_type,
             ];
 
-            return $this->sendResponse($success, 'Otp sent to the email');
+            return $this->sendResponse($success, 'Otp sent to the email: '.$otp);
 
         } catch (\Exception $e) {
             \Log::error('Registration error', ['error' => $e->getMessage()]);

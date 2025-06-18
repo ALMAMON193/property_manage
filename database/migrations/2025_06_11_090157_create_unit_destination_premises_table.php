@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('unit_destination_premises', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('property_id');
+            $table->unsignedBigInteger('unit_id');
             $table->text('auth_com_act')->nullable(); // Shortened: authorized_commercial_activities
             $table->text('proh_com_act')->nullable(); // Shortened: prohibited_commercial_activities
             $table->boolean('excl_clause')->default(false); // Shortened: exclusivity_clause
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('spec_proh_lot')->nullable(); // Shortened: specific_prohibitions_use_other_type_of_lot
             $table->timestamps();
 
-            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
+            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
         });
     }
 

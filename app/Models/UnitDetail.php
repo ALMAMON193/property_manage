@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class UnitDetails extends Model
+class UnitDetail extends Model
 {
-    use HasFactory;
+    protected $table = 'unit_details';
 
     protected $fillable = [
-        'property_id',
+        'unit_id',
         'num_of_living_room',
         'num_of_bedroom',
         'num_of_bathroom',
@@ -34,8 +34,16 @@ class UnitDetails extends Model
         'other_type_of_lot',
     ];
 
-    public function property()
+    protected $casts = [
+        'num_of_living_room' => 'integer',
+        'num_of_bedroom' => 'integer',
+        'num_of_bathroom' => 'integer',
+        'num_of_toilet' => 'integer',
+        'storage_area' => 'integer',
+    ];
+
+    public function unit()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 }

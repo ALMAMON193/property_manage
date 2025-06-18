@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class BathroomFacilities extends Model
+class UnitBathroomFacility extends Model
 {
-    use HasFactory;
+    protected $table = 'unit_bathroom_facilities';
 
     protected $fillable = [
-        'property_id',
+        'unit_id',
         'shower',
         'shower_type',
         'bathtub',
@@ -38,8 +38,8 @@ class BathroomFacilities extends Model
         'cupboards' => 'boolean',
     ];
 
-    public function property()
+    public function unit()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 }

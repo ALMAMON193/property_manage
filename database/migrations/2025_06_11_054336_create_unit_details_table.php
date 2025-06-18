@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('unit_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('property_id');
+            $table->unsignedBigInteger('unit_id');
             $table->integer('num_of_living_room');
             $table->integer('num_of_bedroom');
             $table->integer('num_of_bathroom');
             $table->integer('num_of_toilet');
             $table->string('habitable_area');
             $table->string('commercial_area');
-            $table->string('sales_area');    
+            $table->string('sales_area');
             $table->bigInteger('storage_area');
             $table->string('office_space');
             $table->string('reserve_area');
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->string('other_type_of_lot');
             $table->timestamps();
 
-            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
+            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
         });
     }
 
